@@ -41,12 +41,11 @@ export class workLogsRepository {
     async update (id: string, data: any): Promise<WorkLog | null> {
         const result = await pool.query(
             `UPDATE work_logs
-            SET employee_id = $1,
-                minutes_worked = $2,
-                minutes_downtime = $3
-            WHERE id = $4
+            SET minutes_worked = $1,
+                minutes_downtime = $2
+            WHERE id = $3
             RETURNING *`,
-            [data.employee_id, data.minutes_worked, data.minutes_downtime, id]
+            [data.minutes_worked, data.minutes_downtime, id]
         )
         return result.rows[0] || null;
     }

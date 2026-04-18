@@ -6,6 +6,7 @@ import emplyeesRoutes from './modules/employees/employees.routes';
 import referencesRoutes from "./modules/references/reference.routes"
 import ordersRoutes from "./modules/orders/orders.routes"
 import productionRoutes from "./modules/production/production.routes"
+import workLogRoutes from "./modules/work-logs/work-logs.routes"
 
 const app = express();
 
@@ -17,6 +18,8 @@ app.use('/api/employees', emplyeesRoutes)
 app.use('/api/references', referencesRoutes)
 app.use('/api/orders', ordersRoutes)
 app.use('/api/production', productionRoutes)
+app.use('/api/work-logs', workLogRoutes)
+
 
 
 app.get('/health', (req, res) => {
