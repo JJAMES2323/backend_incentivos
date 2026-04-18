@@ -3,7 +3,7 @@ export interface ReferencesModel {
     reference: string,
     color: string,
     size: string,
-    standard_time: string,
+    standard_time: number,
     active: boolean,
     created_at: Date,
     description: string

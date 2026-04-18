@@ -7,5 +7,6 @@ const PORT = env.PORT;
 
 app.listen(PORT, () => {
   console.log(` Servidor corriendo en puerto ${PORT}`);
+  console.log(` http://localhost:${PORT}`);
 });
 
