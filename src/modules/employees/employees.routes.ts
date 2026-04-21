@@ -11,10 +11,153 @@ import { roleMiddleware } from "../../shared/middlewares/role.middleware";
 
 const router = Router();
 
+/**
+ * @swagger
+ * /api/employees:
+ *   post:
+ *     summary: Crear nuevo empleado
+ *     tags:
+ *       - Empleados
+ *     security:
+ *       - bearerAuth: []
+ *     requestBody:
+ *       required: true
+ *       content:
+ *         application/json:
+ *           schema:
+ *             type: object
+ *             required:
+ *               - document
+ *               - name
+ *               - module
+ *             properties:
+ *               document:
+ *                 type: string
+ *               name:
+ *                 type: string
+ *               address:
+ *                 type: string
+ *               phone:
+ *                 type: string
+ *               email:
+ *                 type: string
+ *               module:
+ *                 type: string
+ *     responses:
+ *       201:
+ *         description: Empleado creado exitosamente
+ *         content:
+ *           application/json:
+ *             schema:
+ *               $ref: '#/components/schemas/Employee'
+ *       400:
+ *         description: Error en la solicitud
+ *   get:
+ *     summary: Obtener todos los empleados
+ *     tags:
+ *       - Empleados
+ *     security:
+ *       - bearerAuth: []
+ *     responses:
+ *       200:
+ *         description: Lista de empleados
+ *         content:
+ *           application/json:
+ *             schema:
+ *               type: array
+ *               items:
+ *                 $ref: '#/components/schemas/Employee'
+ *       400:
+ *         description: Error en la solicitud
+ */
 router.post("/", authMiddleware, roleMiddleware("RH"),createEmployees);
 router.get("/", authMiddleware, roleMiddleware("RH"), getAllEmployees);
+
+/**
+ * @swagger
+ * /api/employees/{id}:
+ *   put:
+ *     summary: Actualizar empleado
+ *     tags:
+ *       - Empleados
+ *     security:
+ *       - bearerAuth: []
+ *     parameters:
+ *       - in: path
+ *         name: id
+ *         required: true
+ *         schema:
+ *           type: integer
+ *     requestBody:
+ *       required: true
+ *       content:
+ *         application/json:
+ *           schema:
+ *             type: object
+ *             properties:
+ *               document:
+ *                 type: string
+ *               name:
+ *                 type: string
+ *               address:
+ *                 type: string
+ *               phone:
+ *                 type: string
+ *               email:
+ *                 type: string
+ *               module:
+ *                 type: string
+ *     responses:
+ *       200:
+ *         description: Empleado actualizado
+ *         content:
+ *           application/json:
+ *             schema:
+ *               $ref: '#/components/schemas/Employee'
+ *       400:
+ *         description: Error en la solicitud
+ *   delete:
+ *     summary: Eliminar empleado
+ *     tags:
+ *       - Empleados
+ *     security:
+ *       - bearerAuth: []
+ *     parameters:
+ *       - in: path
+ *         name: id
+ *         required: true
+ *         schema:
+ *           type: integer
+ *     responses:
+ *       200:
+ *         description: Empleado eliminado
+ *       400:
+ *         description: Error en la solicitud
+ */
 router.put("/:id", authMiddleware, roleMiddleware("RH"), updateEmployees)
 router.delete("/:id", authMiddleware, roleMiddleware("RH"), delteEmployees)
+
+/**
+ * @swagger
+ * /api/employees/{id}/activate:
+ *   put:
+ *     summary: Activar empleado
+ *     tags:
+ *       - Empleados
+ *     security:
+ *       - bearerAuth: []
+ *     parameters:
+ *       - in: path
+ *         name: id
+ *         required: true
+ *         schema:
+ *           type: integer
+ *     responses:
+ *       200:
+ *         description: Empleado activado
+ *       400:
+ *         description: Error en la solicitud
+ */
 router.put("/:id/activate", authMiddleware, roleMiddleware("RH"), activateEmployees)
 
 export default router;

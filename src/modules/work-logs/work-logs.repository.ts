@@ -56,5 +56,17 @@ export class workLogsRepository {
             [id]
         )
     }
-
+    async findByModuleAndDateRange (
+        module: string,
+        start: string,
+        end: string
+    ): Promise<WorkLog[]> {
+        const result = await pool.query(
+            `SELECT * FROM work_logs
+            WHERE module = $1
+            AND work_date BETWEEN $2 AND $3`,
+            [module, start, end]
+        )
+        return result.rows;
+    }
 }

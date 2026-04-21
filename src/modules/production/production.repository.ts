@@ -58,4 +58,22 @@ export class ProductionRepository {
         )
         return result.rows[0] || null;
     }
+    async getSumaryByModuleAndDateRange(
+    module: string,
+    start: string,
+    end: string
+    ) {
+        const result = await pool.query(
+            `SELECT
+                DATE(created_at) as work_date,
+                SUM(total_time) as produced_minutes
+            FROM production_records
+            WHERE module = $1 
+            AND DATE(created_at) BETWEEN $2 AND $3
+            GROUP BY DATE(created_at)`,
+            [module, start, end]
+        );
+
+        return result.rows;
+    }
 }
