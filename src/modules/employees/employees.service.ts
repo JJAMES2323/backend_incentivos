@@ -20,6 +20,7 @@ export class EmployeesService {
         const employee = await this.repo.create(data);
         return {
             id: employee.id,
+            documentType: employee.document_type,
             document: employee.document,
             name: employee.name,
             address: employee.address,

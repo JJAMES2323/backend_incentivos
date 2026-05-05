@@ -8,6 +8,9 @@ import {
 } from "./reference.controller"
 import { authMiddleware } from "../../shared/middlewares/auth.middleware";
 import { roleMiddleware } from "../../shared/middlewares/role.middleware";
+import { validate } from "../../shared/middlewares/validate.middleware";
+import { idParamSchema } from "../../shared/validations/common.schemas";
+import { createReferenceSchema, updateReferenceSchema } from "./reference.schema";
 
 
 const router = Router()
@@ -70,7 +73,7 @@ const router = Router()
  *       400:
  *         description: Error en la solicitud
  */
-router.post("/", authMiddleware, roleMiddleware("PRODUCCION"),createReference)
+router.post("/", authMiddleware, roleMiddleware("PRODUCCION"), validate({ body: createReferenceSchema }),createReference)
 router.get("/", authMiddleware, roleMiddleware("PRODUCCION"), getAllReferences)
 
 /**
@@ -132,8 +135,8 @@ router.get("/", authMiddleware, roleMiddleware("PRODUCCION"), getAllReferences)
  *       400:
  *         description: Error en la solicitud
  */
-router.put("/:id", authMiddleware, roleMiddleware("PRODUCCION"),updateReference)
-router.delete("/:id", authMiddleware, roleMiddleware("PRODUCCION"),deleteReference)
+router.put("/:id", authMiddleware, roleMiddleware("PRODUCCION"), validate({ params: idParamSchema, body: updateReferenceSchema }),updateReference)
+router.delete("/:id", authMiddleware, roleMiddleware("PRODUCCION"), validate({ params: idParamSchema }),deleteReference)
 
 /**
  * @swagger
@@ -156,7 +159,7 @@ router.delete("/:id", authMiddleware, roleMiddleware("PRODUCCION"),deleteReferen
  *       400:
  *         description: Error en la solicitud
  */
-router.put("/:id/activate", authMiddleware, roleMiddleware("PRODUCCION"),activeReference)
+router.put("/:id/activate", authMiddleware, roleMiddleware("PRODUCCION"), validate({ params: idParamSchema }),activeReference)
 
 
 export default router;

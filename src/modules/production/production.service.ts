@@ -56,6 +56,9 @@ export class ProductionService {
         }
 
     }
+    async findAll(){
+        return await this.repo.findAll();
+    }
     async update(id: string, data: UpdateProductionDTO) {
 
         const production = await this.repo.findById(id);
@@ -63,9 +66,13 @@ export class ProductionService {
             throw new Error("No se ha encontrado el registro de producción");
         }
 
-        const lasProduction = await this.repo.lasProductionByOrderId(production.order_id)
+        if (data.units === undefined) {
+            throw new Error("Las unidades son obligatorias para actualizar el registro de producción");
+        }
 
-        if (!lasProduction || lasProduction.id !== production.id) {
+        const lastProduction = await this.repo.lastProductionByOrderId(production.order_id)
+
+        if (!lastProduction || lastProduction.id !== production.id) {
             throw new Error("Solo se puede actualizar el ultimo registro de produccion de una orden")
         }
         const order = await this.repoOrders.findById(production.order_id);
@@ -83,8 +90,8 @@ export class ProductionService {
 
         const diff = newUnits - oldUnits;
         const updateData: UpdateProductionFinishDTO= {
-            units: data.units,
-            total_time: data.units * production.standard_time
+            units: newUnits,
+            total_time: newUnits * production.standard_time
         }
         const updated = await this.repo.update(id, updateData);
 

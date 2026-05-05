@@ -6,6 +6,9 @@ export const roleMiddleware = (...rolesAlowed: string[])=>{
         if(!user){
             return res.status(401).json({message: "No autorizado"});
         }
+        if(user.role === "ADMIN"){
+            return next();
+        }
         if(!rolesAlowed.includes(user.role)){
             return res.status(403).json({message: "Acceso denegado"});
         }

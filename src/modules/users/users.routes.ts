@@ -9,6 +9,13 @@ import {
 } from './users.controller';
 import { authMiddleware } from "../../shared/middlewares/auth.middleware";
 import { roleMiddleware } from "../../shared/middlewares/role.middleware";
+import { validate } from "../../shared/middlewares/validate.middleware";
+import { idParamSchema } from "../../shared/validations/common.schemas";
+import {
+    changePasswordSchema,
+    createUserSchema,
+    updateUserSchema
+} from "./users.schema";
 
 const router = Router();
 
@@ -73,7 +80,7 @@ const router = Router();
  *       400:
  *         description: Error en la solicitud
  */
-router.post('/', authMiddleware, roleMiddleware('ADMIN'), createUser);
+router.post('/', authMiddleware, roleMiddleware('ADMIN'), validate({ body: createUserSchema }), createUser);
 
 router.get('/', authMiddleware, roleMiddleware('ADMIN'), getAllUsers);
 
@@ -132,9 +139,9 @@ router.get('/', authMiddleware, roleMiddleware('ADMIN'), getAllUsers);
  *       400:
  *         description: Error en la solicitud
  */
-router.put('/:id', authMiddleware, roleMiddleware('ADMIN'), updateUser);
+router.put('/:id', authMiddleware, roleMiddleware('ADMIN'), validate({ params: idParamSchema, body: updateUserSchema }), updateUser);
 
-router.delete('/:id', authMiddleware, roleMiddleware('ADMIN'), deleteUser);
+router.delete('/:id', authMiddleware, roleMiddleware('ADMIN'), validate({ params: idParamSchema }), deleteUser);
 
 /**
  * @swagger
@@ -171,7 +178,7 @@ router.delete('/:id', authMiddleware, roleMiddleware('ADMIN'), deleteUser);
  *       400:
  *         description: Error en la solicitud
  */
-router.put('/:id/password', authMiddleware, roleMiddleware('ADMIN'), changePassword);
+router.put('/:id/password', authMiddleware, roleMiddleware('ADMIN'), validate({ params: idParamSchema, body: changePasswordSchema }), changePassword);
 
 /**
  * @swagger
@@ -194,6 +201,6 @@ router.put('/:id/password', authMiddleware, roleMiddleware('ADMIN'), changePassw
  *       400:
  *         description: Error en la solicitud
  */
-router.put('/:id/activate', authMiddleware, roleMiddleware('ADMIN'), activeUser);
+router.put('/:id/activate', authMiddleware, roleMiddleware('ADMIN'), validate({ params: idParamSchema }), activeUser);
 
 export default router;

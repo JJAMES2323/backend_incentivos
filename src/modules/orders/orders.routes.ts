@@ -7,6 +7,9 @@ import {
 } from "./orders.controller";
 import { authMiddleware } from "../../shared/middlewares/auth.middleware";
 import { roleMiddleware } from "../../shared/middlewares/role.middleware";
+import { validate } from "../../shared/middlewares/validate.middleware";
+import { idParamSchema } from "../../shared/validations/common.schemas";
+import { createOrderSchema, updateOrderSchema } from "./orders.schema";
 
 const router = Router();
 
@@ -61,7 +64,7 @@ const router = Router();
  *       400:
  *         description: Error en la solicitud
  */
-router.post("/", CreateOrder);
+router.post("/", authMiddleware, roleMiddleware("PRODUCCION"), validate({ body: createOrderSchema }), CreateOrder);
 router.get("/", authMiddleware, roleMiddleware("PRODUCCION"), GetOrders);
 
 /**
@@ -119,8 +122,7 @@ router.get("/", authMiddleware, roleMiddleware("PRODUCCION"), GetOrders);
  *       400:
  *         description: Error en la solicitud
  */
-router.put("/:id", authMiddleware, roleMiddleware("PRODUCCION"), UpdateOrder);
-router.delete("/:id", authMiddleware, roleMiddleware("PRODUCCION"), DeleteOrder);
+router.put("/:id", authMiddleware, roleMiddleware("PRODUCCION"), validate({ params: idParamSchema, body: updateOrderSchema }), UpdateOrder);
+router.delete("/:id", authMiddleware, roleMiddleware("PRODUCCION"), validate({ params: idParamSchema }), DeleteOrder);
 
 export default router;
-

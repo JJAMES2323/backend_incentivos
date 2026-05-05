@@ -1,4 +1,5 @@
 export interface CreateEmployeesDTO {
+    documentType: string;
     document: string;
     name: string;
     address: string;
@@ -8,6 +9,7 @@ export interface CreateEmployeesDTO {
 }
 
 export interface UpdateEmployeesDTO {
+    documentType?: string;
     name?: string;
     address?: string;
     phone?: string;

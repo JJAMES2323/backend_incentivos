@@ -6,6 +6,9 @@ import {
 } from "./liquidation.controller";
 import { authMiddleware } from "../../shared/middlewares/auth.middleware";
 import { roleMiddleware } from "../../shared/middlewares/role.middleware";
+import { validate } from "../../shared/middlewares/validate.middleware";
+import { idParamSchema } from "../../shared/validations/common.schemas";
+import { createLiquidationSchema } from "./liquidation.schema";
 
 const router = Router()
 
@@ -64,7 +67,7 @@ const router = Router()
  *       400:
  *         description: Error en la solicitud
  */
-router.post("/", authMiddleware, roleMiddleware("PRODUCCION"), createLiquidation)
+router.post("/", authMiddleware, roleMiddleware("PRODUCCION"), validate({ body: createLiquidationSchema }), createLiquidation)
 router.get("/", authMiddleware, roleMiddleware("PRODUCCION"), getLiquidation)
 
 /**
@@ -94,6 +97,6 @@ router.get("/", authMiddleware, roleMiddleware("PRODUCCION"), getLiquidation)
  *       400:
  *         description: Error en la solicitud
  */
-router.get("/:id", authMiddleware, roleMiddleware("PRODUCCION"), getLiquidationDetails)
+router.get("/:id", authMiddleware, roleMiddleware("PRODUCCION"), validate({ params: idParamSchema }), getLiquidationDetails)
 
 export default router;

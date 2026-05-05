@@ -1,5 +1,7 @@
 import { Router } from "express";
 import { login } from "./auth.controller";
+import { validate } from "../../shared/middlewares/validate.middleware";
+import { loginSchema } from "./auth.schema";
 
 const router = Router();
 
@@ -47,6 +49,6 @@ const router = Router();
  *             schema:
  *               $ref: '#/components/schemas/Error'
  */
-router.post('/login', login)
+router.post('/login', validate({ body: loginSchema }), login)
 
 export default router

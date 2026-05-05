@@ -10,6 +10,7 @@ import ordersRoutes from "./modules/orders/orders.routes"
 import productionRoutes from "./modules/production/production.routes"
 import workLogRoutes from "./modules/work-logs/work-logs.routes"
 import liquidationRoutes from "./modules/liquidation/liquidation.routes"
+import { errorMiddleware } from './shared/middlewares/error.middleware';
 
 const app = express();
 
@@ -38,5 +39,6 @@ app.get('/health', (req, res) => {
   res.json({ ok: true, message: 'API funcionando' });
 });
 
+app.use(errorMiddleware);
 
 export default app;

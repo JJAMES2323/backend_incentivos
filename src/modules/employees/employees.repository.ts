@@ -4,17 +4,16 @@ import { EmployeeModel } from "./employees.model";
 export class EmployeesRepository {
     async create (data: any): Promise<EmployeeModel> {
         const result = await pool.query(
-            `INSERT INTO employees (document,name,address,phone,email,module)
-            VALUES ($1,$2,$3,$4,$5,$6)
+            `INSERT INTO employees (document_type,document,name,address,phone,email,module)
+            VALUES ($1,$2,$3,$4,$5,$6,$7)
             RETURNING *`,
-            [data.document, data.name, data.address, data.phone, data.email, data.module]        
+            [data.documentType, data.document, data.name, data.address, data.phone, data.email, data.module]        
         );
         return result.rows[0]
     }
     async findAll(): Promise<EmployeeModel[]>{
         const result = await pool.query(
-            `SELECT * FROM employees
-            WHERE active = true`
+            `SELECT * FROM employees`
         )
         return result.rows;
     }
@@ -28,10 +27,10 @@ export class EmployeesRepository {
     async update (id: number, data: any):Promise<EmployeeModel>{
         const result = await pool.query(
             `UPDATE employees
-            SET name = $1,address = $2, phone = $3, email = $4, module = $5
-            WHERE id = $6
+            SET document_type = $1, name = $2, address = $3, phone = $4, email = $5, module = $6
+            WHERE id = $7
             RETURNING *`,
-            [data.name, data.address, data.phone, data.email, data.module, id]
+            [data.documentType, data.name, data.address, data.phone, data.email, data.module, id]
         )
         return result.rows[0]
     } 

@@ -29,6 +29,7 @@ SET default_table_access_method = heap;
 
 CREATE TABLE public.employees (
     id integer NOT NULL,
+    document_type character varying(20),
     document character varying(20) NOT NULL,
     name character varying(50) NOT NULL,
     address character varying(50),

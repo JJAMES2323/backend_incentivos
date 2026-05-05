@@ -7,13 +7,13 @@ export class UserRepository {
             `INSERT INTO users (name, email, password, role, active)
             VALUES ($1, $2, $3, $4, true)
             RETURNING *`,
-            [data.name, data.email, data.password, data.rol]
+            [data.name, data.email, data.password, data.role]
         );
         return result.rows[0];
     }
     async findAll(): Promise<UserModel[]>{
         const result = await pool.query(
-            'SELECT * FROM users WHERE active = true'
+            'SELECT * FROM users '
         );
         return result.rows;
     }
@@ -30,7 +30,7 @@ export class UserRepository {
             SET name = $1, email = $2, role= $3
             WHERE ID = $4
             RETURNING *`,
-            [data.name, data.email, data.rol, id]
+            [data.name, data.email, data.role, id]
         );
         return result.rows[0];
     }

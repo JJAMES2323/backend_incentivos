@@ -38,6 +38,10 @@ export class WorkLogsService {
 
         //pendiente validar si ya se hizo la liquidacion de ese dia
 
+        if (data.minutes_worked === undefined || data.minutes_downtime === undefined) {
+            throw new Error("Los minutos trabajados e improductivos son obligatorios");
+        }
+
         if (data.minutes_downtime > data.minutes_worked) {
             throw new Error("Los minutos improductivos no pueden ser mayores a los trabajados");
         }
@@ -58,4 +62,3 @@ export class WorkLogsService {
         return {message: "Registro de trabajo eliminado correctamente"}
     }
 }
-

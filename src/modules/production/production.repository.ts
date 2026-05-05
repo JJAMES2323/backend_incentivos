@@ -48,7 +48,7 @@ export class ProductionRepository {
             [id]
         )
     }
-    async lasProductionByOrderId (order_id: string): Promise<ProductionModel | null> {
+    async lastProductionByOrderId (order_id: string): Promise<ProductionModel | null> {
         const result = await pool.query(
             `SELECT * FROM production_records
             WHERE order_id = $1
@@ -57,6 +57,14 @@ export class ProductionRepository {
             [order_id]
         )
         return result.rows[0] || null;
+    }
+    async findByOrderId (order_id: string): Promise<ProductionModel[]> {
+        const result = await pool.query(
+            `SELECT * FROM production_records
+            WHERE order_id = $1`,
+            [order_id]
+        )
+        return result.rows;
     }
     async getSumaryByModuleAndDateRange(
     module: string,

@@ -1,8 +1,9 @@
 import { ReferencesRepository } from "./reference.repository";
+import { OrdersRepository } from "../orders/orders.repository";
 import { CreateReferenceDTO, UpdateReferenceDTO } from "./reference.Dto";
 
 export class ReferencesService {
-    constructor (private repo = new ReferencesRepository()){}
+    constructor (private repo = new ReferencesRepository(), private ordersRepo = new OrdersRepository()){}
 
     async create (data: CreateReferenceDTO){
         const existing = await this.repo.findByRefColSiz(data.reference, data.color, data.size)
@@ -45,6 +46,11 @@ export class ReferencesService {
 
     async delete (id: string){
         const reference = await this.repo.findById(id)
+        const orders = await this.ordersRepo.findByReferenceId(id)
+        
+        if (orders.length > 0){
+            throw new Error("No se puede eliminar una referencia con ordenes de produccion activas")
+        }
 
         if (!reference){
             throw new Error("No se encontro la referencia")

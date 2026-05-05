@@ -6,7 +6,10 @@ const service = new liquidationService(new LiquidationRepository());
 
 export const createLiquidation = async (req: Request, res: Response) => {
     try {
-        const data = req.body;
+        const data = {
+            ...req.body,
+            created_user: req.body.created_user ?? String((req as any).user?.id)
+        };
         const result = await service.create(data);
         res.status(201).json(result)
     } catch (error: any) {

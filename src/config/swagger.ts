@@ -84,6 +84,7 @@ const options = {
         },
         ProductionRecord: {
           type: 'object',
+          required: ['id', 'order_id', 'reference_id', 'module', 'units', 'standard_time', 'total_time'],
           properties: {
             id: { type: 'integer' },
             order_id: { type: 'integer' },
@@ -93,6 +94,32 @@ const options = {
             standard_time: { type: 'number', format: 'double' },
             total_time: { type: 'number', format: 'double' },
             created_at: { type: 'string', format: 'date-time' },
+          },
+        },
+        CreateProductionProcess: {
+          type: 'object',
+          required: ['order_id', 'units'],
+          properties: {
+            order_id: {
+              type: 'integer',
+              description: 'ID de la orden de producción abierta',
+            },
+            units: {
+              type: 'integer',
+              minimum: 1,
+              description: 'Unidades producidas en este registro',
+            },
+          },
+        },
+        UpdateProductionProcess: {
+          type: 'object',
+          required: ['units'],
+          properties: {
+            units: {
+              type: 'integer',
+              minimum: 1,
+              description: 'Nueva cantidad de unidades del último registro de producción de la orden',
+            },
           },
         },
         WorkLog: {

@@ -1,11 +1,15 @@
 import { Router } from "express";
 import {
     createProduction,
+    getAllProduction,
     updateProduction,
     deleteProduction
 } from "./production.controller";
 import { authMiddleware } from "../../shared/middlewares/auth.middleware";
 import { roleMiddleware } from "../../shared/middlewares/role.middleware";
+import { validate } from "../../shared/middlewares/validate.middleware";
+import { idParamSchema } from "../../shared/validations/common.schemas";
+import { createProductionSchema, updateProductionSchema } from "./production.schema";
 
 const router = Router()
 
@@ -23,27 +27,7 @@ const router = Router()
  *       content:
  *         application/json:
  *           schema:
- *             type: object
- *             required:
- *               - order_id
- *               - reference_id
- *               - module
- *               - units
- *               - standard_time
- *               - total_time
- *             properties:
- *               order_id:
- *                 type: integer
- *               reference_id:
- *                 type: integer
- *               module:
- *                 type: string
- *               units:
- *                 type: integer
- *               standard_time:
- *                 type: number
- *               total_time:
- *                 type: number
+ *             $ref: '#/components/schemas/CreateProductionProcess'
  *     responses:
  *       201:
  *         description: Registro creado exitosamente
@@ -53,8 +37,26 @@ const router = Router()
  *               $ref: '#/components/schemas/ProductionRecord'
  *       400:
  *         description: Error en la solicitud
+ *   get:
+ *     summary: Obtener registros de producción
+ *     tags:
+ *       - Producción
+ *     security:
+ *       - bearerAuth: []
+ *     responses:
+ *       200:
+ *         description: Lista de registros de producción
+ *         content:
+ *           application/json:
+ *             schema:
+ *               type: array
+ *               items:
+ *                 $ref: '#/components/schemas/ProductionRecord'
+ *       400:
+ *         description: Error en la solicitud
  */
-router.post("/", authMiddleware, roleMiddleware("PRODUCCION"),createProduction)
+router.post("/", authMiddleware, roleMiddleware("PRODUCCION"), validate({ body: createProductionSchema }),createProduction)
+router.get("/", authMiddleware, roleMiddleware("PRODUCCION"), getAllProduction)
 
 /**
  * @swagger
@@ -76,12 +78,7 @@ router.post("/", authMiddleware, roleMiddleware("PRODUCCION"),createProduction)
  *       content:
  *         application/json:
  *           schema:
- *             type: object
- *             properties:
- *               units:
- *                 type: integer
- *               total_time:
- *                 type: number
+ *             $ref: '#/components/schemas/UpdateProductionProcess'
  *     responses:
  *       200:
  *         description: Registro actualizado
@@ -109,7 +106,7 @@ router.post("/", authMiddleware, roleMiddleware("PRODUCCION"),createProduction)
  *       400:
  *         description: Error en la solicitud
  */
-router.put("/:id", authMiddleware, roleMiddleware("PRODUCCION"), updateProduction)
-router.delete("/:id", authMiddleware, roleMiddleware("PRODUCCION"), deleteProduction)
+router.put("/:id", authMiddleware, roleMiddleware("PRODUCCION"), validate({ params: idParamSchema, body: updateProductionSchema }), updateProduction)
+router.delete("/:id", authMiddleware, roleMiddleware("PRODUCCION"), validate({ params: idParamSchema }), deleteProduction)
 
 export default router;

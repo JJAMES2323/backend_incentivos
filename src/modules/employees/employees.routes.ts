@@ -8,6 +8,9 @@ import{
 } from "./employees.controller";
 import { authMiddleware } from "../../shared/middlewares/auth.middleware";
 import { roleMiddleware } from "../../shared/middlewares/role.middleware";
+import { validate } from "../../shared/middlewares/validate.middleware";
+import { idParamSchema } from "../../shared/validations/common.schemas";
+import { createEmployeesSchema, updateEmployeesSchema } from "./employees.schema";
 
 const router = Router();
 
@@ -27,10 +30,13 @@ const router = Router();
  *           schema:
  *             type: object
  *             required:
+ *               - documentType
  *               - document
  *               - name
  *               - module
  *             properties:
+ *               documentType:
+ *                 type: string
  *               document:
  *                 type: string
  *               name:
@@ -70,7 +76,7 @@ const router = Router();
  *       400:
  *         description: Error en la solicitud
  */
-router.post("/", authMiddleware, roleMiddleware("RH"),createEmployees);
+router.post("/", authMiddleware, roleMiddleware("RH"), validate({ body: createEmployeesSchema }), createEmployees);
 router.get("/", authMiddleware, roleMiddleware("RH"), getAllEmployees);
 
 /**
@@ -95,6 +101,8 @@ router.get("/", authMiddleware, roleMiddleware("RH"), getAllEmployees);
  *           schema:
  *             type: object
  *             properties:
+ *               documentType:
+ *                 type: string
  *               document:
  *                 type: string
  *               name:
@@ -134,8 +142,8 @@ router.get("/", authMiddleware, roleMiddleware("RH"), getAllEmployees);
  *       400:
  *         description: Error en la solicitud
  */
-router.put("/:id", authMiddleware, roleMiddleware("RH"), updateEmployees)
-router.delete("/:id", authMiddleware, roleMiddleware("RH"), delteEmployees)
+router.put("/:id", authMiddleware, roleMiddleware("RH"), validate({ params: idParamSchema, body: updateEmployeesSchema }), updateEmployees)
+router.delete("/:id", authMiddleware, roleMiddleware("RH"), validate({ params: idParamSchema }), delteEmployees)
 
 /**
  * @swagger
@@ -158,6 +166,6 @@ router.delete("/:id", authMiddleware, roleMiddleware("RH"), delteEmployees)
  *       400:
  *         description: Error en la solicitud
  */
-router.put("/:id/activate", authMiddleware, roleMiddleware("RH"), activateEmployees)
+router.put("/:id/activate", authMiddleware, roleMiddleware("RH"), validate({ params: idParamSchema }), activateEmployees)
 
 export default router;

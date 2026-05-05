@@ -63,4 +63,12 @@ export class OrdersRepository {
     );
 
     }
+    async findByReferenceId(reference_id: string): Promise<OrderModel[]> {
+        const result = await pool.query(
+            `SELECT * FROM production_orders
+            WHERE reference_id = $1 and status = 'ABIERTA'`,
+            [reference_id]
+        )
+        return result.rows;
+    }
 }

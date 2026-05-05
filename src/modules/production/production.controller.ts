@@ -13,6 +13,14 @@ export const createProduction = async (req: Request, res: Response)=> {
         res.status(400).json({message: error.message})
     }
 }
+export const getAllProduction = async (_req: Request, res: Response) => {
+    try {
+        const result = await service.findAll();
+        res.json(result)
+    }catch(error: any){
+        res.status(400).json({message: error.message})
+    }
+}
 export const updateProduction = async (req: Request, res: Response) => {
     try {
         const { id } = req.params;

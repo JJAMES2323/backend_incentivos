@@ -7,6 +7,9 @@ import {
  } from "./work-logs.controller";
  import { authMiddleware } from "../../shared/middlewares/auth.middleware";
  import { roleMiddleware } from "../../shared/middlewares/role.middleware";
+ import { validate } from "../../shared/middlewares/validate.middleware";
+ import { idParamSchema } from "../../shared/validations/common.schemas";
+ import { createWorkLogSchema, updateWorkLogSchema } from "./work-logs.schema";
 
  const router = Router();
 
@@ -72,7 +75,7 @@ import {
   *       400:
   *         description: Error en la solicitud
   */
- router.post("/", authMiddleware, roleMiddleware("PRODUCCION"), createWorkLog);
+ router.post("/", authMiddleware, roleMiddleware("PRODUCCION"), validate({ body: createWorkLogSchema }), createWorkLog);
 
 /**
   * @swagger
@@ -129,8 +132,8 @@ import {
   *       400:
   *         description: Error en la solicitud
   */
- router.put("/:id", authMiddleware, roleMiddleware("PRODUCCION"), updateWorLog);
+ router.put("/:id", authMiddleware, roleMiddleware("PRODUCCION"), validate({ params: idParamSchema, body: updateWorkLogSchema }), updateWorLog);
  router.get("/", authMiddleware, roleMiddleware("PRODUCCION"), getAllWorkLogs);
- router.delete("/:id", authMiddleware, roleMiddleware("PRODUCCION"), deleteWorkLog);
+ router.delete("/:id", authMiddleware, roleMiddleware("PRODUCCION"), validate({ params: idParamSchema }), deleteWorkLog);
 
  export default router;
