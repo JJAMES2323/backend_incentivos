@@ -14,12 +14,14 @@ import { errorMiddleware } from './shared/middlewares/error.middleware';
 
 const app = express();
 
+app.set('trust proxy', 1);
 app.use(cors());
 app.use(express.json());
 
 // Swagger documentation
 app.use('/api-docs', swaggerUi.serve, (req: any, res: any, next: any) => {
-  const host = `${req.protocol}://${req.get('host')}`;
+  const protocol = req.get('X-Forwarded-Proto') || req.protocol;
+  const host = `${protocol}://${req.get('host')}`;
   (swaggerSpec as any).servers = [{ url: host, description: 'Servidor actual' }];
   swaggerUi.setup(swaggerSpec, {
     swaggerOptions: { persistAuthorization: true },
