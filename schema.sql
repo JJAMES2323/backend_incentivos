@@ -2,8 +2,6 @@
 -- PostgreSQL database dump
 --
 
-\restrict QZ3m4fWWZK2TtkeBuhk3xR8KWeDc4c8rr2LfRmoEZAIFx5kL8k4dDaFblqP4lXf
-
 -- Dumped from database version 18.3
 -- Dumped by pg_dump version 18.3
 
@@ -76,7 +74,7 @@ CREATE TABLE public.incentive_rules (
 );
 
 
-ALTER TABLE public.incentive_rules OWNER TO james;
+ALTER TABLE public.incentive_rules OWNER TO postgres;
 
 --
 -- Name: incentive_rules_id_seq; Type: SEQUENCE; Schema: public; Owner: james
@@ -91,7 +89,7 @@ CREATE SEQUENCE public.incentive_rules_id_seq
     CACHE 1;
 
 
-ALTER SEQUENCE public.incentive_rules_id_seq OWNER TO james;
+ALTER SEQUENCE public.incentive_rules_id_seq OWNER TO postgres;
 
 --
 -- Name: incentive_rules_id_seq; Type: SEQUENCE OWNED BY; Schema: public; Owner: james
@@ -120,7 +118,7 @@ CREATE TABLE public.liquidation_details (
 );
 
 
-ALTER TABLE public.liquidation_details OWNER TO james;
+ALTER TABLE public.liquidation_details OWNER TO postgres;
 
 --
 -- Name: liquidation_details_id_seq; Type: SEQUENCE; Schema: public; Owner: james
@@ -135,7 +133,7 @@ CREATE SEQUENCE public.liquidation_details_id_seq
     CACHE 1;
 
 
-ALTER SEQUENCE public.liquidation_details_id_seq OWNER TO james;
+ALTER SEQUENCE public.liquidation_details_id_seq OWNER TO postgres;
 
 --
 -- Name: liquidation_details_id_seq; Type: SEQUENCE OWNED BY; Schema: public; Owner: james
@@ -158,7 +156,7 @@ CREATE TABLE public.liquidations (
 );
 
 
-ALTER TABLE public.liquidations OWNER TO james;
+ALTER TABLE public.liquidations OWNER TO postgres;
 
 --
 -- Name: liquidations_id_seq; Type: SEQUENCE; Schema: public; Owner: james
@@ -173,7 +171,7 @@ CREATE SEQUENCE public.liquidations_id_seq
     CACHE 1;
 
 
-ALTER SEQUENCE public.liquidations_id_seq OWNER TO james;
+ALTER SEQUENCE public.liquidations_id_seq OWNER TO postgres;
 
 --
 -- Name: liquidations_id_seq; Type: SEQUENCE OWNED BY; Schema: public; Owner: james
@@ -237,7 +235,7 @@ CREATE TABLE public.production_orders (
 );
 
 
-ALTER TABLE public.production_orders OWNER TO james;
+ALTER TABLE public.production_orders OWNER TO postgres;
 
 --
 -- Name: production_orders_id_seq; Type: SEQUENCE; Schema: public; Owner: james
@@ -252,7 +250,7 @@ CREATE SEQUENCE public.production_orders_id_seq
     CACHE 1;
 
 
-ALTER SEQUENCE public.production_orders_id_seq OWNER TO james;
+ALTER SEQUENCE public.production_orders_id_seq OWNER TO postgres;
 
 --
 -- Name: production_orders_id_seq; Type: SEQUENCE OWNED BY; Schema: public; Owner: james
@@ -277,7 +275,7 @@ CREATE TABLE public.production_records (
 );
 
 
-ALTER TABLE public.production_records OWNER TO james;
+ALTER TABLE public.production_records OWNER TO postgres;
 
 --
 -- Name: production_records_id_seq; Type: SEQUENCE; Schema: public; Owner: james
@@ -292,7 +290,7 @@ CREATE SEQUENCE public.production_records_id_seq
     CACHE 1;
 
 
-ALTER SEQUENCE public.production_records_id_seq OWNER TO james;
+ALTER SEQUENCE public.production_records_id_seq OWNER TO postgres;
 
 --
 -- Name: production_records_id_seq; Type: SEQUENCE OWNED BY; Schema: public; Owner: james
@@ -356,7 +354,7 @@ CREATE TABLE public.work_logs (
 );
 
 
-ALTER TABLE public.work_logs OWNER TO james;
+ALTER TABLE public.work_logs OWNER TO postgres;
 
 --
 -- Name: work_logs_id_seq; Type: SEQUENCE; Schema: public; Owner: james
@@ -371,7 +369,7 @@ CREATE SEQUENCE public.work_logs_id_seq
     CACHE 1;
 
 
-ALTER SEQUENCE public.work_logs_id_seq OWNER TO james;
+ALTER SEQUENCE public.work_logs_id_seq OWNER TO postgres;
 
 --
 -- Name: work_logs_id_seq; Type: SEQUENCE OWNED BY; Schema: public; Owner: james
@@ -598,6 +596,4 @@ ALTER TABLE ONLY public.production_records
 --
 -- PostgreSQL database dump complete
 --
-
-\unrestrict QZ3m4fWWZK2TtkeBuhk3xR8KWeDc4c8rr2LfRmoEZAIFx5kL8k4dDaFblqP4lXf
 

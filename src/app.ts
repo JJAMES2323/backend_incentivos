@@ -18,11 +18,13 @@ app.use(cors());
 app.use(express.json());
 
 // Swagger documentation
-app.use('/api-docs', swaggerUi.serve, swaggerUi.setup(swaggerSpec, {
-  swaggerOptions: {
-    persistAuthorization: true,
-  },
-}));
+app.use('/api-docs', swaggerUi.serve, (req: any, res: any, next: any) => {
+  const host = `${req.protocol}://${req.get('host')}`;
+  swaggerSpec.servers = [{ url: host, description: 'Servidor actual' }];
+  swaggerUi.setup(swaggerSpec, {
+    swaggerOptions: { persistAuthorization: true },
+  })(req, res, next);
+});
 
 app.use('/api/auth', authRoutes);
 app.use('/api/users', userRoutes);
