@@ -5,7 +5,7 @@ import { env } from './config/env';
 
 const PORT = env.PORT;
 
-app.listen(PORT, '0.0.0.0', () => {
+app.listen(Number(PORT), '0.0.0.0', () => {
   console.log(` Servidor corriendo en puerto ${PORT}`);
 });
 
