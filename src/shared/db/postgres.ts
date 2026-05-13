@@ -8,6 +8,7 @@ export const pool = new Pool ({
     password: env.DB_PASSWORD,
     database: env.DB_NAME,
     ssl: { rejectUnauthorized: false },
+    family: 4,
 });
 
 pool.query('SELECT 1')
