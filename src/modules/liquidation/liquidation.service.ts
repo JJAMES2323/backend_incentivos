@@ -20,15 +20,30 @@ export class liquidationService {
             const rules = await this.repo.getAllIncentiveRules();
             console.log(rules);
 
-            const incentiveMap = new Map(
-                rules.map(r => [r.efficiency_point, Number(r.value)])
-            );
+            const sortedRules = rules.sort((a, b) => a.efficiency_point - b.efficiency_point);
+
+            const getIncentiveBase = (efficiency: number): number => {
+                let bestRule = null;
+                for (const rule of sortedRules) {
+                    if (rule.efficiency_point <= efficiency) {
+                        bestRule = rule;
+                    } else {
+                        break;
+                    }
+                }
+                return bestRule ? Number(bestRule.value) : 0;
+            };
 
             const workLogs = await this.repoWorkLogs.findByModuleAndDateRange(
                 data.module,
                 String(data.start_date),
                 String(data.end_date)
             );
+
+            if (!workLogs.length) {
+                throw new Error(`No hay work_logs registrados para el módulo "${data.module}" entre ${String(data.start_date)} y ${String(data.end_date)}`);
+            }
+
             console.log(workLogs);
 
             const production = await this.repoProduction.getSumaryByModuleAndDateRange(
@@ -36,6 +51,11 @@ export class liquidationService {
                 String(data.start_date),
                 String(data.end_date)
             );
+
+            if (!production.length) {
+                throw new Error(`No hay producción registrada para el módulo "${data.module}" entre ${String(data.start_date)} y ${String(data.end_date)}`);
+            }
+
             console.log(production);
 
             const formatDate = (date: Date) => {
@@ -78,8 +98,7 @@ export class liquidationService {
                     efficiency = (produced / totalEffective) * 100;
                 }
 
-                const effPoint = Math.min(Math.floor(efficiency), 105);
-                const incentiveBase = incentiveMap.get(effPoint) || 0;
+                const incentiveBase = getIncentiveBase(efficiency);
 
                 for (const w of logs) {
 

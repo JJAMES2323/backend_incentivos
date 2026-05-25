@@ -1,11 +1,13 @@
 import { Pool } from 'pg';
 import { env } from '../../config/env';
 
+const ssl = !env.DATABASE_URL.includes('localhost')
+  ? { rejectUnauthorized: false }
+  : false;
+
 export const pool = new Pool({
   connectionString: env.DATABASE_URL,
-  ssl: {
-    rejectUnauthorized: false,
-  },
+  ssl,
 });
 
 pool.query('SELECT 1')
