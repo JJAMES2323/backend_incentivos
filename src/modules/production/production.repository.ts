@@ -73,12 +73,12 @@ export class ProductionRepository {
     ) {
         const result = await pool.query(
             `SELECT
-                DATE(created_at) as work_date,
+                (created_at AT TIME ZONE 'America/Bogota')::date as work_date,
                 SUM(total_time) as produced_minutes
             FROM production_records
             WHERE module = $1 
-            AND DATE(created_at) BETWEEN $2 AND $3
-            GROUP BY DATE(created_at)`,
+            AND (created_at AT TIME ZONE 'America/Bogota')::date BETWEEN $2 AND $3
+            GROUP BY (created_at AT TIME ZONE 'America/Bogota')::date`,
             [module, start, end]
         );
 

@@ -107,12 +107,18 @@ export class ProductionService {
         if (!production){
             throw new Error ("No se ha encontrado el registro de produccion")
         }
-        const today = new Date();
-        const createdAt = new Date(production.created_at);
+        const colDate = (d: Date) => {
+            const fmt = new Intl.DateTimeFormat('en-CA', { timeZone: 'America/Bogota' });
+            const [year, month, day] = fmt.format(d).split('-').map(Number);
+            return { year, month, day };
+        };
+
+        const todayCol = colDate(new Date());
+        const createdCol = colDate(new Date(production.created_at));
         const isToday =
-            createdAt.getFullYear() === today.getFullYear() &&
-            createdAt.getMonth() === today.getMonth() &&
-            createdAt.getDate() === today.getDate();
+            todayCol.year === createdCol.year &&
+            todayCol.month === createdCol.month &&
+            todayCol.day === createdCol.day;
 
         if (!isToday){
             throw new Error ("Solo se pueden eliminar registros de produccion del dia de hoy")
